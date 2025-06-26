@@ -58,6 +58,26 @@ fn main() {
             }
         };
 
+        match conn.set_read_timeout(Some(TCP_TIMEOUT)) {
+            Ok(_) => {}
+            Err(e) => {
+                lasterr = Some(e);
+
+                std::thread::sleep(PING_INTERVAL);
+                continue;
+            }
+        }
+
+        match conn.set_write_timeout(Some(TCP_TIMEOUT)) {
+            Ok(_) => {}
+            Err(e) => {
+                lasterr = Some(e);
+
+                std::thread::sleep(PING_INTERVAL);
+                continue;
+            }
+        }
+
         match conn.write_all(&MAGIC) {
             Ok(_) => {}
             Err(e) => {
